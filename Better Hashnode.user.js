@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         Better Hashnode
 // @namespace    https://hashnode.com
-// @version      0.2
+// @version      0.2.0
 // @description  try to take over the world!
 // @author       Marco Alka
 // @match        https://hashnode.com/*
+// @source       https://github.com/minecrawler/tm-better-hashnode
+// @updateURL    https://github.com/minecrawler/tm-better-hashnode/blob/master/Better%20Hashnode.user.js
 // @grant        GM_addStyle
 // ==/UserScript==
 
@@ -25,7 +27,7 @@ const bodyEle = document.querySelector('body');
 const userName = document.querySelector('.profile-name').innerText;
 
 
-// remove ads after a grace period
+// remove ads after 5s
 setTimeout(function() {
     'use strict';
 
@@ -34,6 +36,7 @@ setTimeout(function() {
         .forEach(ele => ele.parentNode.removeChild(ele))
     ;
 }, 5000);
+
 
 // inject styles
 const style =
@@ -56,6 +59,10 @@ const style =
   width: calc(100% - 100px);
 }
 
+.c-chat__input[disabled] {
+  cursor: not-allowed;
+}
+
 .c-chat__input-row {
   display: flex;
   flex-direction: row;
@@ -65,6 +72,11 @@ const style =
   width: 100px;
   height: 30px;
   margin: 0;
+  cursor: pointer;
+}
+
+.c-chat__submit[disabled] {
+  cursor: not-allowed;
 }
 
 .c-chat__messages {
@@ -159,6 +171,40 @@ const chatBtnEle = chatEle.querySelector('.js-chat__visibility-btn');
 const chatInputEle = chatEle.querySelector('.js-chat__input');
 const chatMessagesEle = chatEle.querySelector('.js-chat__messages');
 const chatSubmitEle = chatEle.querySelector('.js-chat__submit');
+// Create WebSocket connection.
+const socket = new WebSocket('wss://marco-alka.de:1288');
+
+// Connection opened
+socket.addEventListener('open', eve => {
+    displayChatMessage('System', 'Connected to chat server');
+});
+
+// Listen for messages
+socket.addEventListener('message', eve => {
+    const data = JSON.parse(eve.data);
+    displayChatMessage(data.author, data.message);
+});
+
+const displayChatMessage = function displayChatMessage($author, $message) {
+    chatMessagesEle.appendChild(document.createTextNode(`[${$author}]: ${$message}`));
+    chatMessagesEle.appendChild(document.createElement('br'));
+};
+
+const hideChatWorkingIndicator = function hideChatWorkingIndicator() {
+    chatInputEle.removeAttribute('disabled');
+    chatSubmitEle.removeAttribute('disabled');
+    chatSubmitEle.innerText = 'Send';
+};
+
+const sendChatMessage = function sendChatMessage($message) {
+    socket.readyState > 3 && socket.send(`{"author":"${userName}","message":"${$message}"}`);
+};
+
+const showChatWorkingIndicator = function showChatWorkingIndicator() {
+    chatInputEle.setAttribute('disabled', '');
+    chatSubmitEle.setAttribute('disabled', '');
+    chatSubmitEle.innerText = 'Working';
+};
 
 bodyEle.appendChild(chatEle);
 chatBtnEle.addEventListener('click', () => {
@@ -174,16 +220,18 @@ chatBtnEle.addEventListener('click', () => {
 chatSubmitEle.addEventListener('click', () => {
     if (chatInputEle.value === '') return;
 
-    chatMessagesEle.innerText += `[${userName}]: ${chatInputEle.value}`;
-    chatMessagesEle.innerHTML += '<br>';
+    sendChatMessage(chatInputEle.value);
     chatInputEle.value = '';
     chatInputEle.focus();
-
     chatMessagesEle.scrollTop = chatMessagesEle.scrollHeight;
 });
 
-
-
+setTimeout(() => {// todo: get rid of this workaround
+    if (socket.readyState === 3) {
+        showChatWorkingIndicator();
+        displayChatMessage('System', 'Could not connect to chat server');
+    }
+}, 2000);
 
 
 
