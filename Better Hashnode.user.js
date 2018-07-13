@@ -6,7 +6,7 @@
 // @author       Marco Alka
 // @match        https://hashnode.com/*
 // @source       https://github.com/minecrawler/tm-better-hashnode
-// @updateURL    https://github.com/minecrawler/tm-better-hashnode/blob/master/Better%20Hashnode.user.js
+// @updateURL    https://github.com/minecrawler/tm-better-hashnode/raw/master/Better%20Hashnode.user.js
 // @grant        GM_addStyle
 // ==/UserScript==
 
