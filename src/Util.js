@@ -40,12 +40,12 @@ export default {
                     });
                 }
             };
-            Object
+            /*Object
                 .keys(httpHeaders)
                 .forEach(header => xhr.setRequestHeader(header, httpHeaders[header]))
-            ;
+            ;*/
 
-            xhr.send(requestBody);
+            xhr.send(/*requestBody*/);
         });
     }
 };
