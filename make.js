@@ -43,7 +43,7 @@ async function build() {
                 output: styles => {
                     const cleanedCSS = new CleanCSS().minify(styles);
 
-                    require('fs').writeFileSync('cache/css.js', `GM_addStyle(\`${cleanedCSS.styles}\`);`);
+                    require('fs').writeFileSync('cache/css.js', `;GM_addStyle(\`${cleanedCSS.styles}\`);`);
                 },
             }),
         ],
