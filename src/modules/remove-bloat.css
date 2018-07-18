@@ -1,4 +1,4 @@
-.post-card.status-card,
-.widget.lets-write {
+.post-card.status-card:first-child, /* the bar with your avatar, which is concurrent */
+.widget.lets-write { /* the widget on the right side, which is concurrent */
     display: none !important;
 }

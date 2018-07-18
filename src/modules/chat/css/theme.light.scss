@@ -1,0 +1,54 @@
+@import "common";
+
+.t-light .c-chat {
+  border-left: $default-outer-border;
+  border-top: $default-outer-border;
+  background-color: white;
+  padding: 6px 10px;
+
+  @include transition(margin);
+}
+
+.t-light .c-chat__input {
+  border: none;
+}
+
+.t-light .c-chat__messages {
+  border-bottom: 1px solid #ccc;
+}
+
+.t-light .c-chat__submit {
+  border: 0;
+}
+
+.t-light .c-chat__submit {
+  color: #fff;
+  background-color: #28a745;
+
+  @include transition(background-color);
+}
+
+.t-light .c-chat__submit:hover {
+  background-color: #27a56c;
+}
+
+.t-light .c-chat__user-list {
+  background-color: white;
+  border-left: $default-outer-border;
+}
+
+.t-light .c-chat__visibility-btn {
+  border: none;
+  padding: 1px 6px;
+  color: white;
+  background-color: #2fc681;
+}
+
+.t-light .c-chat__visibility-btn:hover {
+  background-color: #1e7e34;
+}
+
+
+.t-light .o-chat-user-list__username {
+  color: #777;
+}

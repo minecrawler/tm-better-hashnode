@@ -57,7 +57,13 @@ async function build() {
     const bundle = await rollup({
         input: 'src/index.js',
         plugins: [
-            closure(),
+            closure({
+                assumeFunctionWrapper: true,
+                languageOut: 'ES6',
+                externs: [
+                    { src: 'function GM_addStyle(style) {}' },
+                ],
+            }),
             html({
                 htmlMinifierOptions: {
                     collapseWhitespace: true,

@@ -6,14 +6,36 @@ const bodyEle = document.querySelector('body');
 const chatEle = document.createElement('div');
 const username = API.getCurrentUser().username;
 
-chatEle.classList.add('c-chat');
+chatEle.classList.add('c-chat__container');
 chatEle.classList.add('t-light');
 chatEle.innerHTML = chatHTML;
+bodyEle.appendChild(chatEle);
 
 const chatBtnEle = chatEle.querySelector('.js-chat__visibility-btn');
 const chatInputEle = chatEle.querySelector('.js-chat__input');
 const chatMessagesEle = chatEle.querySelector('.js-chat__messages');
 const chatSubmitEle = chatEle.querySelector('.js-chat__submit');
+
+
+
+const chatShellElements = [
+    chatEle.querySelector('.js-chat'),
+    chatEle.querySelector('.js-chat__user-list'),
+    chatEle.querySelector('.js-chat__visibility-btn'),
+];
+
+chatBtnEle.addEventListener('click', () => {
+    if (!chatBtnEle.classList.contains('o-chat-visible')) {
+        chatBtnEle.innerText = 'Hide Chat';
+        chatShellElements.forEach(ele => ele.classList.add('o-chat-visible'));
+    }
+    else {
+        chatBtnEle.innerText = 'Show Chat';
+        chatShellElements.forEach(ele => ele.classList.remove('o-chat-visible'));
+    }
+});
+
+
 const socket = new WebSocket('wss://' + settings.server);
 
 socket.addEventListener('open', eve => {
@@ -45,17 +67,6 @@ const showChatWorkingIndicator = function showChatWorkingIndicator() {
     chatSubmitEle.setAttribute('disabled', '');
     chatSubmitEle.innerText = 'Working';
 };
-
-bodyEle.appendChild(chatEle);
-chatBtnEle.addEventListener('click', () => {
-    chatEle.classList.toggle('c-chat--visible');
-    if (chatEle.classList.contains('c-chat--visible')) {
-        chatBtnEle.innerText = 'Hide Chat';
-    }
-    else {
-        chatBtnEle.innerText = 'Show Chat';
-    }
-});
 
 chatSubmitEle.addEventListener('click', () => {
     if (chatInputEle.value === '') return;

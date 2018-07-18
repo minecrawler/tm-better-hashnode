@@ -1,0 +1,104 @@
+@import "common";
+
+.c-chat {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-bottom: -$default-chat-box-height;
+    height: $default-chat-box-height;
+    width: 500px;
+
+    @include transition(margin-bottom);
+}
+
+.o-chat-visible.c-chat {
+    margin-bottom: 0;
+}
+
+.c-chat__container {
+    position: fixed;
+    z-index: 1000;
+    right: 0;
+    top: 0;
+    height: 100%;
+}
+
+.c-chat__input {
+    width: calc(100% - 100px);
+}
+
+.c-chat__input[disabled] {
+    cursor: not-allowed;
+}
+
+.c-chat__input-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.c-chat__submit {
+    width: 100px;
+    height: 30px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.c-chat__submit[disabled] {
+    cursor: not-allowed;
+}
+
+.c-chat__messages {
+    height: calc(100% - 30px);
+    overflow: hidden;
+    word-wrap: break-word;
+    overflow-y: scroll;
+}
+
+.c-chat__user-list {
+    height: 100%;
+    width: 200px;
+    margin-right: -$default-user-box-width;
+
+    @include transition(margin-right, height);
+}
+
+.o-chat-visible.c-chat__user-list {
+    margin-right: 0;
+    height: calc(100% - #{$default-chat-box-height});
+}
+
+.o-chat-user-list__display-name {
+    display: block;
+}
+
+.c-chat-user-list__heading {
+    font-size: 1.5em;
+    padding: 1em 15px;
+    margin: 0;
+}
+
+.o-chat-user-list__user {
+  margin-bottom: 5px;
+  border-top: 1px solid #777;
+}
+
+.c-chat-user-list__users {
+    list-style: none;
+    padding-left: 25px;
+}
+
+.c-chat__visibility-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 2em;
+    width: 100px;
+    cursor: pointer;
+
+    @include transition(margin-bottom, margin-right, background-color);
+}
+
+.o-chat-visible.c-chat__visibility-btn {
+    margin-bottom: $default-chat-box-height;
+    margin-right: $default-user-box-width;
+}

@@ -1,0 +1,9 @@
+$default-chat-box-height: 250px;
+$default-outer-border: 1px solid black;
+$default-user-box-width: 200px;
+
+@mixin transition($properties...) {
+  transition-timing-function: ease-in-out;
+  transition-duration: .3s;
+  transition-property: $properties;
+}
