@@ -18,11 +18,28 @@ This script is **unofficial**!
 3. Profit
 
 
-## How to build the script
+## How to build the TM script
 
+1. Download and install [NodeJS](https://nodejs.org)
 1. `npm i .`
 2. `npm run build`
 3. The output file is in the `/dist` directory
+4. Import the file using the TM Dashboard (located under "Utilities")
+
+
+## How to build the chat server
+
+1. Download and install [Rust](https://www.rust-lang.org)
+2. `cargo build --release`
+3. The server binary is located in `/target/release/`
+4. Start the server with `./target/release/hashnode-chat-server`
+
+
+## Why did you not just make a NodeJS server?
+
+Needing a second toolchain to build a project is annoying, and not every webdev is able to develop in Rust.
+However, Rust is very ideal on the server side, as it produces very stable and slim binaries,
+which can sport high concurrency easily. Also, I really need the exercise. 
 
 
 ## How to contribute an entirely new feature

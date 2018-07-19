@@ -16,8 +16,6 @@ const chatInputEle = chatEle.querySelector('.js-chat__input');
 const chatMessagesEle = chatEle.querySelector('.js-chat__messages');
 const chatSubmitEle = chatEle.querySelector('.js-chat__submit');
 
-
-
 const chatShellElements = [
     chatEle.querySelector('.js-chat'),
     chatEle.querySelector('.js-chat__user-list'),
@@ -35,8 +33,26 @@ chatBtnEle.addEventListener('click', () => {
     }
 });
 
+const protocol = /^localhost/i.test(settings.server.toString()) ? 'ws' : 'wss';
+const socket = new WebSocket(protocol + '://' + settings.server);
 
-const socket = new WebSocket('wss://' + settings.server);
+const sendCommand = (commandName, data) => {
+    if (socket.readyState !== 1) {
+        // queue command for later
+        return;
+    }
+
+    const dataType = typeof data;
+
+    if (!['string', 'number'].includes(dataType)) {
+        data = JSON.stringify(data);
+    }
+
+    socket.send(JSON.stringify({
+        command: commandName,
+        data: data.toString(),
+    }));
+};
 
 socket.addEventListener('open', eve => {
     displayChatMessage('System', 'Connected to chat server');
@@ -44,7 +60,14 @@ socket.addEventListener('open', eve => {
 
 socket.addEventListener('message', eve => {
     const data = JSON.parse(eve.data);
-    displayChatMessage(data.author, data.message);
+
+    try {
+        data.data = JSON.parse(data.data);
+    }
+    catch(err) { console.error(err) }
+
+    // todo: interpret command correctly
+    displayChatMessage(data.data.author, data.data.message);
 });
 
 const displayChatMessage = function displayChatMessage($author, $message) {
@@ -59,7 +82,10 @@ const hideChatWorkingIndicator = function hideChatWorkingIndicator() {
 };
 
 const sendChatMessage = function sendChatMessage($message) {
-    socket.readyState > 3 && socket.send(`{"author":"${username}","message":"${$message}"}`);
+    sendCommand('chat-message', {
+        author: username,
+        message: $message,
+    });
 };
 
 const showChatWorkingIndicator = function showChatWorkingIndicator() {

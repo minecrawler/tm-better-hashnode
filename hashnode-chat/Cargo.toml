@@ -1,0 +1,20 @@
+[package]
+name = "hashnode-chat-server"
+version = "0.1.0"
+authors = ["ALK1SGM"]
+
+[dependencies]
+actix = "0.5"
+actix-web = "0.6"
+futures = "0.1"
+rand = "*"
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
+tokio-core = "0.1"
+
+[profile.release]
+panic = "abort"
+lto = true
+codegen-units = 1
+incremental = false
